@@ -1,12 +1,12 @@
-import React from 'react';
-import * as Flex from '@twilio/flex-ui';
-import { FlexPlugin } from '@twilio/flex-plugin';
+import React from "react";
+import * as Flex from "@twilio/flex-ui";
+import { FlexPlugin } from "@twilio/flex-plugin";
 
-import CRMPanel from './components/CRMPanel/CRMPanel';
-import CustomTaskListContainer from './components/CustomTaskList/CustomTaskList.Container';
-import reducers, { namespace } from './states';
+import CRMPanel from "./components/CRMPanel/CRMPanel";
+import reducers, { namespace } from "./states";
+import ChatDropdown from "./components/ChatDropdown/ChatDropdown";
 
-const PLUGIN_NAME = 'ChatMessageCannedResponsePlugin';
+const PLUGIN_NAME = "ChatMessageCannedResponsePlugin";
 
 export default class ChatMessageCannedResponsePlugin extends FlexPlugin {
   constructor() {
@@ -23,9 +23,20 @@ export default class ChatMessageCannedResponsePlugin extends FlexPlugin {
   async init(flex: typeof Flex, manager: Flex.Manager): Promise<void> {
     this.registerReducers(manager);
 
+    const crmPanelView = true;
+
     const options: Flex.ContentFragmentProps = { sortOrder: -1 };
-    //   flex.AgentDesktopView.Panel1.Content.add(<CustomTaskListContainer key="ChatMessageCannedResponsePlugin-component" />, options);
-      flex.AgentDesktopView.Panel2.Content.add(<CRMPanel key="ChatMessagesCannedResponseCRMPanel" />, options)
+
+    if (crmPanelView) {
+      flex.AgentDesktopView.Panel2.Content.add(
+        <CRMPanel key="ChatMessagesCannedResponseCRMPanel" />,
+        options
+      );
+    } else {
+      flex.TaskCanvas.Content.add(
+        <ChatDropdown key="ChatMessagesCannedResponseDropdown" />
+      );
+    }
   }
 
   /**
@@ -36,7 +47,9 @@ export default class ChatMessageCannedResponsePlugin extends FlexPlugin {
   private registerReducers(manager: Flex.Manager) {
     if (!manager.store.addReducer) {
       // eslint-disable-next-line
-      console.error(`You need FlexUI > 1.9.0 to use built-in redux; you are currently on ${Flex.VERSION}`);
+      console.error(
+        `You need FlexUI > 1.9.0 to use built-in redux; you are currently on ${Flex.VERSION}`
+      );
       return;
     }
 

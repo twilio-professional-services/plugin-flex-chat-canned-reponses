@@ -1,47 +1,61 @@
-import React from 'react';
+import React from "react";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import Divider from "@material-ui/core/Divider";
+import { withStyles } from "@material-ui/core/styles";
 
-import Section from './components/Section/Section';
+import Section from "./components/Section";
+import { questions } from "../../data";
 
 interface OwnProps {
   // Props passed directly to the component
+  classes: any;
 }
 
 // Props should be a combination of StateToProps, DispatchToProps, and OwnProps
 type Props = OwnProps;
 
+const styles = {
+  root: {
+    padding: "24px",
+  },
+  header: {
+    marginBottom: 10,
+  },
+  title: {
+    fontSize: "24px",
+    fontWeight: 700,
+  },
+  section: {
+    marginBottom: 12,
+  },
+  divider: {
+    marginTop: 5,
+    marginBottom: 5,
+  },
+};
+
 // It is recommended to keep components stateless and use redux for managing states
 const CRMPanel: React.FunctionComponent<Props> = (props: Props) => {
-  const questions = [
-    {
-      section: 'Sales',
-      questions: [
-        {
-          label: 'Cost',
-          text: 'We have multiple billing options. You can pay yearly and save 10%'
-        },
-        {
-          label: 'Promotion',
-          text: 'We do offer discounts for our best customers.'
-        }
-      ]
-    },
-    {
-      section: 'Support',
-      questions: [
-        { label: 'Login', text: 'You can login at https://example.com' },
-        { label: 'Forgot Password', text: 'You can reset your password here at https://example.com/passwordreset' }
-      ]
-    }
-  ];
+  const { classes } = props;
+
   return (
-      <>
-      {questions.map((q) => {
-        return <Section {...q} />
-        })}
-      </>
+    <Grid container className={classes.root}>
+      <Grid item xs={12} className={classes.header}>
+        <Typography className={classes.title}>
+          Pre-canned Chat Responses
+        </Typography>
+        <Divider className={classes.divider} />
+      </Grid>
+      {questions.map((q) => (
+        <Grid item xs={12} className={classes.section} key={q.section}>
+          <Section {...q} />
+        </Grid>
+      ))}
+    </Grid>
   );
 };
 
-CRMPanel.displayName = 'CRMPanel';
+CRMPanel.displayName = "CRMPanel";
 
-export default CRMPanel;
+export default withStyles(styles)(CRMPanel);
