@@ -52,7 +52,7 @@ const Section: React.FunctionComponent<Props> = ({
       <Typography className={classes.sectionTitle}>{section}</Typography>
       <Divider className={classes.divider} />
       {questions.map((q) => {
-        return <Question label={q.label} text={q.text} />;
+        return <Question key={q.text} label={q.label} text={q.text} />;
       })}
     </Paper>
   );

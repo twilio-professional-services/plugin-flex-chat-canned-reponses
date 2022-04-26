@@ -1,6 +1,7 @@
 import React from "react";
 import * as Flex from "@twilio/flex-ui";
 import { FlexPlugin } from "@twilio/flex-plugin";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 import CRMPanel from "./components/CRMPanel/CRMPanel";
 import reducers, { namespace } from "./states";
@@ -23,18 +24,28 @@ export default class ChatMessageCannedResponsePlugin extends FlexPlugin {
   async init(flex: typeof Flex, manager: Flex.Manager): Promise<void> {
     this.registerReducers(manager);
 
-    const crmPanelView = true;
-
+    const crmPanelView = false;
+    const queryClient = new QueryClient();
     const options: Flex.ContentFragmentProps = { sortOrder: -1 };
 
     if (crmPanelView) {
       flex.AgentDesktopView.Panel2.Content.add(
-        <CRMPanel key="ChatMessagesCannedResponseCRMPanel" />,
+        <QueryClientProvider
+          client={queryClient}
+          key="ChatMessagesCannedResponseCRMPanel"
+        >
+          <CRMPanel />
+        </QueryClientProvider>,
         options
       );
     } else {
       flex.TaskCanvas.Content.add(
-        <ChatDropdown key="ChatMessagesCannedResponseDropdown" />
+        <QueryClientProvider
+          client={queryClient}
+          key="ChatMessagesCannedResponseDropdown"
+        >
+          <ChatDropdown />
+        </QueryClientProvider>
       );
     }
   }
