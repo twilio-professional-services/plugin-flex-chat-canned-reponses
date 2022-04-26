@@ -5,9 +5,11 @@ import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import ChatIcon from "@material-ui/icons/ChatBubble";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 
-import { questions } from "../../data";
+import { useResponses } from "../../api";
 
 interface OwnProps {
   // Props passed directly to the component
@@ -36,6 +38,7 @@ const styles = {
 const ChatDropdown: React.FunctionComponent<Props> = (props: Props) => {
   const { classes } = props;
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const { status, data } = useResponses();
 
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -56,39 +59,49 @@ const ChatDropdown: React.FunctionComponent<Props> = (props: Props) => {
       <TaskContext.Consumer>
         {(context) => (
           <>
-            <Button
-              variant="outlined"
-              onClick={handleClick}
-              className={classes.button}
-            >
-              <ChatIcon className={classes.icon} />
-              Pre-canned Chat Responses
-            </Button>
-            <Menu
-              id="simple-menu"
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-            >
-              {questions.map((q) => (
-                <div key={q.section}>
-                  <MenuItem disabled={true}>{q.section}</MenuItem>
-                  {q.questions.map((question) => (
-                    <MenuItem
-                      key={question.text}
-                      onClick={() =>
-                        insertMessage(
-                          context.chatChannel?.source?.sid,
-                          question.text
-                        )
-                      }
-                    >
-                      {question.text}
-                    </MenuItem>
+            {status === "loading" ? (
+              <CircularProgress className={classes.progress} />
+            ) : status === "success" ? (
+              <>
+                <Button
+                  variant="outlined"
+                  onClick={handleClick}
+                  className={classes.button}
+                >
+                  <ChatIcon className={classes.icon} />
+                  Pre-canned Chat Responses
+                </Button>
+                <Menu
+                  id="simple-menu"
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={handleClose}
+                >
+                  {data.data.map((q: any) => (
+                    <div key={q.section}>
+                      <MenuItem disabled={true}>{q.section}</MenuItem>
+                      {q.questions.map((question: any) => (
+                        <MenuItem
+                          key={question.text}
+                          onClick={() =>
+                            insertMessage(
+                              context.chatChannel?.source?.sid,
+                              question.text
+                            )
+                          }
+                        >
+                          {question.text}
+                        </MenuItem>
+                      ))}
+                    </div>
                   ))}
-                </div>
-              ))}
-            </Menu>
+                </Menu>
+              </>
+            ) : (
+              <Typography>
+                There was an error fetching responses -- please reload the page.
+              </Typography>
+            )}
           </>
         )}
       </TaskContext.Consumer>
