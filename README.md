@@ -45,13 +45,13 @@ The Canned Chat Responses for Flex plugin can add the fetched responses beneath 
 
 When added beneath the chat input text field, a button labeled `PRE-CANNED CHAT RESPONSES` appears when an Agent enters into a chat session. When the button is clicked, a dropdown appears with the chat responses sorted by category. If a message is clicked, the text will be placed into the chat input field, allowing the Agent to edit or send the message. Any selection from the dropdown will overwrite the current text in the input field (i.e. clicking another canned response).
 
-<img  src="./functions/assets/chat-widget.gif"  alt="Twilio"  width="600"  />
+<img  src="./functions/assets/chat-widget.gif"  alt="Twilio"  width="800"  />
 
 ### CRM Panel
 
 When added to the CRM Panel, the responses are displayed within categories. Under each response, there is a `Send` button that will automatically send the response to the customer, and an `Insert` button that will place the text in the chat input field. Similar to the **Chat Widget Dropdown** functionality, the `Insert` button will overwrite the current text in the input field (i.e. clicking another canned response).
 
-<img  src="./functions/assets/crm.gif"  alt="Twilio"  width="600"  />
+<img  src="./functions/assets/crm-pane.gif"  alt="Twilio"  width="800"  />
 
 ### Toggling the Placement of the Responses
 
