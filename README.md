@@ -89,15 +89,21 @@ After the above requirements have been met:
    npm install
    ```
 
-3. [Deploy your Twilio Function](#twilio-serverless-deployment).
+3. Rename and create the `appConfig.js` file:
 
-4. Run the application.
+   ```bash
+   cd public && cp appConfig.example.js appConfig.js
+   ```
+
+4. [Deploy your Twilio Function](#twilio-serverless-deployment).
+
+5. Run the application.
 
    ```bash
    twilio flex:plugins:start
    ```
 
-5. Navigate to [http://localhost:3000](http://localhost:3000).
+6. Navigate to [http://localhost:3000](http://localhost:3000).
 
 ### Twilio Serverless deployment
 
