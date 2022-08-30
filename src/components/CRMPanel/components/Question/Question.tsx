@@ -35,14 +35,14 @@ const styles = {
 
 // It is recommended to keep components stateless and use redux for managing states
 const Question: React.FunctionComponent<Props> = ({ text, classes }) => {
-  const onClickSend = (channelSid: string | undefined) => {
-    if (!channelSid) return;
-    Actions.invokeAction("SendMessage", { body: text, channelSid });
+  const onClickSend = (conversationSid: string | undefined) => {
+    if (!conversationSid) return;
+    Actions.invokeAction("SendMessage", { body: text, conversationSid });
   };
 
-  const onClickCopy = (channelSid: string | undefined) => {
-    if (!channelSid) return;
-    Actions.invokeAction("SetInputText", { body: text, channelSid });
+  const onClickCopy = (conversationSid: string | undefined) => {
+    if (!conversationSid) return;
+    Actions.invokeAction("SetInputText", { body: text, conversationSid });
   };
   return (
     <TaskContext.Consumer>
@@ -55,7 +55,7 @@ const Question: React.FunctionComponent<Props> = ({ text, classes }) => {
               variant="contained"
               color="primary"
               size="small"
-              onClick={() => onClickSend(context.chatChannel?.source?.sid)}
+              onClick={() => onClickSend(context.conversation?.source?.sid)}
             >
               Send
               <SendIcon className={classes.icon} />
@@ -65,7 +65,7 @@ const Question: React.FunctionComponent<Props> = ({ text, classes }) => {
               variant="contained"
               color="primary"
               size="small"
-              onClick={() => onClickCopy(context.chatChannel?.source?.sid)}
+              onClick={() => onClickCopy(context.conversation?.source?.sid)}
             >
               Insert
               <FileCopyIcon className={classes.icon} />

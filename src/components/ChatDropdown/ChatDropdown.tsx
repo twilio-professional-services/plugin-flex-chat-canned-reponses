@@ -48,9 +48,9 @@ const ChatDropdown: React.FunctionComponent<Props> = (props: Props) => {
     setAnchorEl(null);
   };
 
-  const insertMessage = (channelSid: string | undefined, text: any) => {
-    if (!channelSid) return;
-    Actions.invokeAction("SetInputText", { body: text, channelSid });
+  const insertMessage = (conversationSid: string | undefined, text: any) => {
+    if (!conversationSid) return;
+    Actions.invokeAction("SetInputText", { body: text, conversationSid });
     handleClose();
   };
 
@@ -85,7 +85,7 @@ const ChatDropdown: React.FunctionComponent<Props> = (props: Props) => {
                           key={question.text}
                           onClick={() =>
                             insertMessage(
-                              context.chatChannel?.source?.sid,
+                              context.conversation?.source?.sid,
                               question.text
                             )
                           }

@@ -24,7 +24,7 @@ export default class ChatMessageCannedResponsePlugin extends FlexPlugin {
   async init(flex: typeof Flex, manager: Flex.Manager): Promise<void> {
     this.registerReducers(manager);
 
-    const crmPanelView = false;
+    const crmPanelView = true;
     const queryClient = new QueryClient();
     const options: Flex.ContentFragmentProps = { sortOrder: -1 };
 
