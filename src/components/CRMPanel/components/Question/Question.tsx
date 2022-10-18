@@ -34,7 +34,7 @@ const styles = {
 };
 
 // It is recommended to keep components stateless and use redux for managing states
-const Question: React.FunctionComponent<Props> = ({ text, classes }) => {
+const Question: React.FunctionComponent<Props> = ({ text, classes }: any) => {
   const onClickSend = (conversationSid: string | undefined) => {
     if (!conversationSid) return;
     Actions.invokeAction("SendMessage", { body: text, conversationSid });
@@ -46,7 +46,7 @@ const Question: React.FunctionComponent<Props> = ({ text, classes }) => {
   };
   return (
     <TaskContext.Consumer>
-      {(context) => (
+      {(context: any) => (
         <>
           <Typography className={classes.text}>{text}</Typography>
           <div className={classes.buttonContainer}>

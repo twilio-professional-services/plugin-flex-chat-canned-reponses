@@ -24,9 +24,11 @@ export default class ChatMessageCannedResponsePlugin extends FlexPlugin {
   async init(flex: typeof Flex, manager: Flex.Manager): Promise<void> {
     this.registerReducers(manager);
 
-    const crmPanelView = true;
+    const crmPanelView = false;
     const queryClient = new QueryClient();
-    const options: Flex.ContentFragmentProps = { sortOrder: -1 };
+    const options: Flex.ContentFragmentProps = {
+      if: (props: any) => flex.TaskHelper.isChatBasedTask(props.task),
+    };
 
     if (crmPanelView) {
       flex.AgentDesktopView.Panel2.Content.add(
@@ -45,7 +47,8 @@ export default class ChatMessageCannedResponsePlugin extends FlexPlugin {
           key="ChatMessagesCannedResponseDropdown"
         >
           <ChatDropdown />
-        </QueryClientProvider>
+        </QueryClientProvider>,
+        options
       );
     }
   }
