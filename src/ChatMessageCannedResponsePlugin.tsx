@@ -7,6 +7,8 @@ import CRMPanel from "./components/CRMPanel/CRMPanel";
 import reducers, { namespace } from "./states";
 import ChatDropdown from "./components/ChatDropdown/ChatDropdown";
 
+import { CustomizationProvider } from '@twilio-paste/core/dist/customization';
+
 const PLUGIN_NAME = "ChatMessageCannedResponsePlugin";
 
 export default class ChatMessageCannedResponsePlugin extends FlexPlugin {
@@ -24,6 +26,10 @@ export default class ChatMessageCannedResponsePlugin extends FlexPlugin {
   async init(flex: typeof Flex, manager: Flex.Manager): Promise<void> {
     this.registerReducers(manager);
 
+    flex.setProviders({
+      PasteThemeProvider: CustomizationProvider
+    });
+
     const crmPanelView = false;
     const queryClient = new QueryClient();
     const options: Flex.ContentFragmentProps = {
@@ -31,14 +37,13 @@ export default class ChatMessageCannedResponsePlugin extends FlexPlugin {
     };
 
     if (crmPanelView) {
-      flex.AgentDesktopView.Panel2.Content.add(
+      flex.AgentDesktopView.Panel2.Content.replace(
         <QueryClientProvider
           client={queryClient}
           key="ChatMessagesCannedResponseCRMPanel"
         >
           <CRMPanel />
-        </QueryClientProvider>,
-        options
+        </QueryClientProvider>
       );
     } else {
       flex.TaskCanvas.Content.add(
@@ -47,7 +52,7 @@ export default class ChatMessageCannedResponsePlugin extends FlexPlugin {
           key="ChatMessagesCannedResponseDropdown"
         >
           <ChatDropdown />
-        </QueryClientProvider>,
+        </QueryClientProvider>, 
         options
       );
     }
