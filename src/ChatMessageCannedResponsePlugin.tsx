@@ -30,14 +30,14 @@ export default class ChatMessageCannedResponsePlugin extends FlexPlugin {
       PasteThemeProvider: CustomizationProvider
     });
 
-    const crmPanelView = false;
+    const crmPanelView = true;
     const queryClient = new QueryClient();
     const options: Flex.ContentFragmentProps = {
       if: (props: any) => flex.TaskHelper.isChatBasedTask(props.task),
     };
 
     if (crmPanelView) {
-      flex.AgentDesktopView.Panel2.Content.replace(
+      flex.AgentDesktopView.Panel2.Content.add(
         <QueryClientProvider
           client={queryClient}
           key="ChatMessagesCannedResponseCRMPanel"

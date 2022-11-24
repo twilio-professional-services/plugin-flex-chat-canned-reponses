@@ -6,9 +6,6 @@
     "postinstall": "flex-plugin pre-script-check"
   },
   "dependencies": {
-    "@material-ui/core": "^4.11.3",
-    "@material-ui/icons": "^4.11.3",
-    "@material-ui/utils": "^4.11.3",
     "@twilio-paste/core": "16.0.1",
     "@twilio-paste/icons": "9.3.0",
     "@twilio/flex-plugin-scripts": "6.0.3",
