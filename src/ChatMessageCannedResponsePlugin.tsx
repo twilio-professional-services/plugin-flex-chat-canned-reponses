@@ -37,9 +37,9 @@ export default class ChatMessageCannedResponsePlugin extends FlexPlugin {
     const options: Flex.ContentFragmentProps = {
       if: (props: any) => {
         // In the TaskCanvas, we have access to the task directly. In the AgentDesktopView, we don't, however we have access to all the tasks and the selected one that we could retrieve
-        //console.log("Component props: ", props);
-        return props.task ? TaskHelper.isChatBasedTask(props.task) : 
-          props.selectedTaskSid ? TaskHelper.isChatBasedTask(props.tasks.get(props.selectedTaskSid)) : false;
+        console.log("Component props: ", props);
+        return props.task !== undefined ? TaskHelper.isChatBasedTask(props.task) : 
+          (props.selectedTaskSid == null) ? false: TaskHelper.isChatBasedTask(props.tasks.get(props.selectedTaskSid));
       }
     };
 
