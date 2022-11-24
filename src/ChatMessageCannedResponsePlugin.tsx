@@ -2,6 +2,7 @@ import React from "react";
 import * as Flex from "@twilio/flex-ui";
 import { FlexPlugin } from "@twilio/flex-plugin";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { TaskHelper } from "@twilio/flex-ui";
 
 import CRMPanel from "./components/CRMPanel/CRMPanel";
 import reducers, { namespace } from "./states";
@@ -32,8 +33,14 @@ export default class ChatMessageCannedResponsePlugin extends FlexPlugin {
 
     const crmPanelView = true;
     const queryClient = new QueryClient();
+
     const options: Flex.ContentFragmentProps = {
-      if: (props: any) => flex.TaskHelper.isChatBasedTask(props.task),
+      if: (props: any) => {
+        // In the TaskCanvas, we have access to the task directly. In the AgentDesktopView, we don't, however we have access to all the tasks and the selected one that we could retrieve
+        //console.log("Component props: ", props);
+        return props.task ? TaskHelper.isChatBasedTask(props.task) : 
+          props.selectedTaskSid ? TaskHelper.isChatBasedTask(props.tasks.get(props.selectedTaskSid)) : false;
+      }
     };
 
     if (crmPanelView) {
@@ -43,7 +50,8 @@ export default class ChatMessageCannedResponsePlugin extends FlexPlugin {
           key="ChatMessagesCannedResponseCRMPanel"
         >
           <CRMPanel />
-        </QueryClientProvider>
+        </QueryClientProvider>,
+        options
       );
     } else {
       flex.TaskCanvas.Content.add(
