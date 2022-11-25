@@ -31,15 +31,23 @@ export default class ChatMessageCannedResponsePlugin extends FlexPlugin {
       PasteThemeProvider: CustomizationProvider
     });
 
-    const crmPanelView = true;
+    const crmPanelView = false;
     const queryClient = new QueryClient();
 
     const options: Flex.ContentFragmentProps = {
       if: (props: any) => {
-        // In the TaskCanvas, we have access to the task directly. In the AgentDesktopView, we don't, however we have access to all the tasks and the selected one that we could retrieve
+        // In the TaskCanvas, we have access to the task directly. 
+        // In the AgentDesktopView, we don't, however we have access to all the tasks and the selected one that we could retrieve
+        // When completing the task, selectedTaskSid still exist but the task in the map has been removed, so we have to check the size of it
         console.log("Component props: ", props);
-        return props.task !== undefined ? TaskHelper.isChatBasedTask(props.task) : 
-          (props.selectedTaskSid == null) ? false: TaskHelper.isChatBasedTask(props.tasks.get(props.selectedTaskSid));
+        if(props.task){
+          return TaskHelper.isChatBasedTask(props.task);
+        } else {
+          if(props.selectedTaskSid && props.tasks.size > 0) {
+            return TaskHelper.isChatBasedTask(props.tasks.get(props.selectedTaskSid))
+          }
+          return false;
+        }
       }
     };
 
@@ -50,7 +58,7 @@ export default class ChatMessageCannedResponsePlugin extends FlexPlugin {
           key="ChatMessagesCannedResponseCRMPanel"
         >
           <CRMPanel />
-        </QueryClientProvider>,
+        </QueryClientProvider>, 
         options
       );
     } else {
