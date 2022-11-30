@@ -1,40 +1,23 @@
 import React from "react";
 import { Actions, TaskContext } from "@twilio/flex-ui";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-import SendIcon from "@material-ui/icons/Send";
-import FileCopyIcon from "@material-ui/icons/FileCopy";
-import { withStyles } from "@material-ui/core/styles";
+
+import { Text } from '@twilio-paste/text'
+import { Button } from '@twilio-paste/core/button'
+import { CopyIcon } from "@twilio-paste/icons/esm/CopyIcon";
+import { SendIcon } from "@twilio-paste/icons/esm/SendIcon";
+import {Stack} from '@twilio-paste/core/stack';
 
 interface OwnProps {
   label: string;
   text: string;
   children?: React.ReactNode;
-  classes: any;
 }
 
 // Props should be a combination of StateToProps, DispatchToProps, and OwnProps
 type Props = OwnProps;
 
-const styles = {
-  buttonContainer: {
-    marginBottom: 12,
-  },
-  text: {
-    marginBottom: 6,
-  },
-  button: {
-    marginRight: 8,
-    backgroundColor: "rgb(5, 125, 158)",
-  },
-  icon: {
-    marginLeft: 6,
-    fontSize: 14,
-  },
-};
-
 // It is recommended to keep components stateless and use redux for managing states
-const Question: React.FunctionComponent<Props> = ({ text, classes }: any) => {
+const Question: React.FunctionComponent<Props> = ({ text }: any) => {
   const onClickSend = (conversationSid: string | undefined) => {
     if (!conversationSid) return;
     Actions.invokeAction("SendMessage", { body: text, conversationSid });
@@ -48,35 +31,21 @@ const Question: React.FunctionComponent<Props> = ({ text, classes }: any) => {
     <TaskContext.Consumer>
       {(context: any) => (
         <>
-          <Typography className={classes.text}>{text}</Typography>
-          <div className={classes.buttonContainer}>
-            <Button
-              className={classes.button}
-              variant="contained"
-              color="primary"
-              size="small"
-              onClick={() => onClickSend(context.conversation?.source?.sid)}
-            >
-              Send
-              <SendIcon className={classes.icon} />
-            </Button>
-            <Button
-              className={classes.button}
-              variant="contained"
-              color="primary"
-              size="small"
-              onClick={() => onClickCopy(context.conversation?.source?.sid)}
-            >
+          <Text as="p" color="colorText" marginBottom="space30" marginTop="space30">{text}</Text>
+          <Stack orientation="horizontal" spacing="space60">
+            <Button variant="secondary" onClick={() => onClickCopy(context.conversation?.source?.sid)}>
+              <CopyIcon decorative title="Insert pre-canned response" />
               Insert
-              <FileCopyIcon className={classes.icon} />
             </Button>
-          </div>
+            <Button variant="primary" onClick={() => onClickSend(context.conversation?.source?.sid)}>
+              <SendIcon decorative title="Send pre-canned response" />
+              Send 
+            </Button>   
+            </Stack>     
         </>
       )}
     </TaskContext.Consumer>
   );
 };
 
-Question.displayName = "Question";
-
-export default withStyles(styles)(Question);
+export default Question;

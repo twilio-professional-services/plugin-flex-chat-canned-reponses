@@ -2,10 +2,13 @@ import React from "react";
 import * as Flex from "@twilio/flex-ui";
 import { FlexPlugin } from "@twilio/flex-plugin";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { TaskHelper } from "@twilio/flex-ui";
 
 import CRMPanel from "./components/CRMPanel/CRMPanel";
 import reducers, { namespace } from "./states";
 import ChatDropdown from "./components/ChatDropdown/ChatDropdown";
+
+import { CustomizationProvider } from '@twilio-paste/core/dist/customization';
 
 const PLUGIN_NAME = "ChatMessageCannedResponsePlugin";
 
@@ -24,10 +27,27 @@ export default class ChatMessageCannedResponsePlugin extends FlexPlugin {
   async init(flex: typeof Flex, manager: Flex.Manager): Promise<void> {
     this.registerReducers(manager);
 
+    flex.setProviders({
+      PasteThemeProvider: CustomizationProvider
+    });
+
     const crmPanelView = false;
     const queryClient = new QueryClient();
+
     const options: Flex.ContentFragmentProps = {
-      if: (props: any) => flex.TaskHelper.isChatBasedTask(props.task),
+      if: (props: any) => {
+        // In the TaskCanvas, we have access to the task directly. 
+        // In the AgentDesktopView, we don't, however we have access to all the tasks and the selected one that we could retrieve
+        // When completing the task, selectedTaskSid still exist but the task in the map has been removed, so we have to check the size of it
+        if(props.task){
+          return TaskHelper.isChatBasedTask(props.task);
+        } else {
+          if(props.selectedTaskSid && props.tasks.size > 0) {
+            return TaskHelper.isChatBasedTask(props.tasks.get(props.selectedTaskSid))
+          }
+          return false;
+        }
+      }
     };
 
     if (crmPanelView) {
@@ -37,7 +57,7 @@ export default class ChatMessageCannedResponsePlugin extends FlexPlugin {
           key="ChatMessagesCannedResponseCRMPanel"
         >
           <CRMPanel />
-        </QueryClientProvider>,
+        </QueryClientProvider>, 
         options
       );
     } else {
@@ -47,7 +67,7 @@ export default class ChatMessageCannedResponsePlugin extends FlexPlugin {
           key="ChatMessagesCannedResponseDropdown"
         >
           <ChatDropdown />
-        </QueryClientProvider>,
+        </QueryClientProvider>, 
         options
       );
     }
