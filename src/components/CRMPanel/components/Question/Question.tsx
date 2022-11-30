@@ -33,7 +33,7 @@ const Question: React.FunctionComponent<Props> = ({ text }: any) => {
         <>
           <Text as="p" color="colorText" marginBottom="space30" marginTop="space30">{text}</Text>
           <Stack orientation="horizontal" spacing="space60">
-            <Button variant="primary" onClick={() => onClickCopy(context.conversation?.source?.sid)}>
+            <Button variant="secondary" onClick={() => onClickCopy(context.conversation?.source?.sid)}>
               <CopyIcon decorative title="Insert pre-canned response" />
               Insert
             </Button>

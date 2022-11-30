@@ -39,7 +39,6 @@ export default class ChatMessageCannedResponsePlugin extends FlexPlugin {
         // In the TaskCanvas, we have access to the task directly. 
         // In the AgentDesktopView, we don't, however we have access to all the tasks and the selected one that we could retrieve
         // When completing the task, selectedTaskSid still exist but the task in the map has been removed, so we have to check the size of it
-        console.log("Component props: ", props);
         if(props.task){
           return TaskHelper.isChatBasedTask(props.task);
         } else {

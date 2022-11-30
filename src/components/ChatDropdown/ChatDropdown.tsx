@@ -10,6 +10,7 @@ import {
   MenuGroup,
   useMenuState
 } from '@twilio-paste/core/menu';
+import { SkeletonLoader } from '@twilio-paste/core/skeleton-loader';
 import { ChatIcon } from "@twilio-paste/icons/esm/ChatIcon";
 import { useResponses } from "../../api";
 
@@ -29,7 +30,7 @@ const ChatDropdown: React.FunctionComponent = () => {
         {(context) => (
           <>
             {status === "loading" ? (
-              <Button variant="primary" loading>Loading</Button>
+              <SkeletonLoader />
             ) : status === "success" ? (
               <>
                 <MenuButton {...menu} variant="primary" fullWidth={true}>
