@@ -1,73 +1,41 @@
 import React from "react";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { withStyles } from "@material-ui/core/styles";
+
+import { Text } from '@twilio-paste/text'
+import {SkeletonLoader} from '@twilio-paste/core/skeleton-loader';
+import {Column, Grid} from '@twilio-paste/core/grid';
+import {Box} from '@twilio-paste/core/box';
 
 import Section from "./components/Section";
 import { useResponses } from "../../api";
 
-interface OwnProps {
-  // Props passed directly to the component
-  classes: any;
-}
-
-// Props should be a combination of StateToProps, DispatchToProps, and OwnProps
-type Props = OwnProps;
-
-const styles = {
-  root: {
-    padding: "24px",
-  },
-  header: {
-    marginBottom: 10,
-  },
-  title: {
-    fontSize: "24px",
-    fontWeight: 700,
-  },
-  section: {
-    marginBottom: 12,
-  },
-  divider: {
-    marginTop: 5,
-    marginBottom: 5,
-  },
-};
-
 // It is recommended to keep components stateless and use redux for managing states
-const CRMPanel: React.FunctionComponent<Props> = (props: Props) => {
-  const { classes } = props;
+const CRMPanel: React.FunctionComponent = () => {
   const { status, data } = useResponses();
 
   return (
-    <Grid container className={classes.root}>
-      <Grid item xs={12} className={classes.header}>
-        <Typography className={classes.title}>
+    <Box as="div" padding="space50">
+        <Text as="h1" fontSize="fontSize80" fontWeight="fontWeightSemibold" marginBottom="space40" marginTop="space30">
           Pre-canned Chat Responses
-        </Typography>
-        <Divider className={classes.divider} />
-      </Grid>
+        </Text>
       {status === "loading" ? (
-        <CircularProgress className={classes.progress} />
+        <SkeletonLoader />
       ) : status === "success" ? (
         <>
           {data.data.map((q: any) => (
-            <Grid item xs={12} className={classes.section} key={q.section}>
-              <Section {...q} />
+            <Grid gutter="space30" vertical>
+              <Column>
+                <Section {...q} />
+              </Column>
             </Grid>
           ))}
         </>
       ) : (
-        <Typography>
+        <Text as="p">
           There was an error fetching responses -- please reload the page.
-        </Typography>
+        </Text>
       )}
-    </Grid>
+    </Box>
   );
 };
 
-CRMPanel.displayName = "CRMPanel";
-
-export default withStyles(styles)(CRMPanel);
+export default CRMPanel;
